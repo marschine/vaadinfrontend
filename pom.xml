@@ -108,6 +108,7 @@
 				<configuration>
 					<url>http://marrrschine.de:8080/manager/text</url>
 					<server>tomcat</server>
+					<path>/vaadinfrontend/</path>
 				</configuration>
 			</plugin>
 			<!-- End My Dep -->
