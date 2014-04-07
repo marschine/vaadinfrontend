@@ -14,7 +14,7 @@ public class ServiceConsumer {
 	public JSONArray consumeServiceGet() throws ParseException {
 		Client client = Client.create();
 
-		WebResource webResource = client.resource("http://marrrschine.de:8080/rest/hello/live");
+		WebResource webResource = client.resource("http://marrrschine.de:8080/rest/hello/newlive");
 		ClientResponse response = webResource.accept("application/json")
                 .type("application/json").get(ClientResponse.class);
 		String s = response.getEntity(String.class);
