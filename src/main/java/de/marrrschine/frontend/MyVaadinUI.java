@@ -20,7 +20,7 @@ import com.vaadin.ui.VerticalLayout;
 public class MyVaadinUI extends UI {
 
 	@WebServlet(value = "/*", asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class, widgetset = "de.marrrschine.frontend.AppWidgetSet")
+	@VaadinServletConfiguration(productionMode = true, ui = MyVaadinUI.class, widgetset = "de.marrrschine.frontend.AppWidgetSet")
 	public static class Servlet extends VaadinServlet {
 	}
 
