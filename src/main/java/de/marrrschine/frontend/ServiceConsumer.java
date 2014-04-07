@@ -29,4 +29,14 @@ public class ServiceConsumer {
 
 		return jsonArray;
 	}
+
+	public String consumeOtcService() throws ParseException {
+		Client client = Client.create();
+		WebResource webResource = client.resource("http://marrrschine.de:8080/rest/hello/otc");
+		ClientResponse response = webResource.accept("application/json")
+                .type("application/json").get(ClientResponse.class);
+		String s = response.getEntity(String.class);
+		return s;
+	}
+	
 }

@@ -4,12 +4,13 @@ import javax.servlet.annotation.WebServlet;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -29,16 +30,24 @@ public class MyVaadinUI extends UI {
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		setContent(layout);
-
-		// Handle the events with an anonymous class
-
 		ServiceConsumer serviceConsumer = new ServiceConsumer();
+
+		try {
+			String otc = serviceConsumer.consumeOtcService();
+			Label label = new Label("Next up: " + otc);
+			label.addStyleName("fancylabel");
+			layout.addComponent(label);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		final Table table = new Table("Available Prospects");
-		table.addContainerProperty("Rank", String.class, null);
+		table.addContainerProperty("Rank", Long.class, null);
 		table.addContainerProperty("Firstname", String.class, null);
 		table.addContainerProperty("Lastname", String.class, null);
 		table.addContainerProperty("Position", String.class, null);
-		table.addContainerProperty("Rank in Position", String.class, null);
+		table.addContainerProperty("Rank in Position", Long.class, null);
 		table.addContainerProperty("Class", String.class, null);
 		table.addContainerProperty("School", String.class, null);
 		table.addContainerProperty("Weight", String.class, null);
@@ -58,21 +67,21 @@ public class MyVaadinUI extends UI {
 				String school = (String) jsonObj.get("school");
 				String weight = (String) (jsonObj.get("weight"));
 				String classYear = (String) jsonObj.get("classYear");
-				String posRank = (String) jsonObj.get("posRank");
+				long posRank = (Long)jsonObj.get("posRank");
 				String pos = (String) jsonObj.get("pos");
-				String rank = (String) jsonObj.get("rank");
+				long rank = (Long) jsonObj.get("rank");
 				String height = (String) jsonObj.get("height");
-				table.addItem(
-						new Object[] { rank, firstname, lastname, pos, posRank, classYear, school, weight, height }, i);
+				table.addItem(new Object[] { rank, firstname, lastname, pos,
+						posRank, classYear, school, weight, height }, i);
 				table.setPageLength(i);
 			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (org.json.simple.parser.ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		table.setMultiSelect(true);
+		table.setSortEnabled(true);
+		table.setSelectable(true);
 		layout.addComponent(table);
 	}
 
