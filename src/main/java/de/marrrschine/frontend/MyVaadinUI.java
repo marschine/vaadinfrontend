@@ -31,6 +31,9 @@ public class MyVaadinUI extends UI {
 
 	ServiceConsumer serviceConsumer;
 	Table table;
+	BeanContainer<String, Prospect> dataContainer;
+	TextField tf;
+	VerticalLayout layout;
 
 	@WebServlet(value = "/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = true, ui = MyVaadinUI.class, widgetset = "de.marrrschine.frontend.AppWidgetSet")
@@ -50,19 +53,9 @@ public class MyVaadinUI extends UI {
 	}
 
 	private void createTable() throws ParseException {
-		table.addContainerProperty("Rank", Long.class, null);
-		table.addContainerProperty("Firstname", String.class, null);
-		table.addContainerProperty("Lastname", String.class, null);
-		table.addContainerProperty("Position", String.class, null);
-		table.addContainerProperty("Rank in Position", Long.class, null);
-		table.addContainerProperty("Class", String.class, null);
-		table.addContainerProperty("School", String.class, null);
-		table.addContainerProperty("Weight", String.class, null);
-		table.addContainerProperty("Height", String.class, null);
-		// BeanItemContainer<Person> container = new BeanItemContainer<Person>(Person.class);
 
 		List<Prospect> prospectList = serviceConsumer.consumeServiceGet();
-		BeanContainer<String, Prospect> dataContainer = new BeanContainer<String, Prospect>(Prospect.class);
+		dataContainer = new BeanContainer<String, Prospect>(Prospect.class);
 		dataContainer.removeAllItems();
 		dataContainer.setBeanIdProperty("rank");
 		dataContainer.addAll(prospectList);
@@ -72,11 +65,11 @@ public class MyVaadinUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		serviceConsumer = new ServiceConsumer();
-		final VerticalLayout layout = new VerticalLayout();
+		layout = new VerticalLayout();
 		setContent(layout);
 		layout.setMargin(true);
 		// Text field for inputting a filter
-		final TextField tf = new TextField("Lastname Filter");
+		tf = new TextField("Lastname Filter");
 		tf.focus();
 		this.addLabel(layout);
 		layout.addComponent(tf);
